@@ -1,9 +1,9 @@
-import React, { useState, useEffect, FunctionComponent } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { RouteComponentProps, Link, withRouter } from 'react-router-dom';
 import authmanager from '../lib/authmanager';
 import graphandClient from '../lib/graphand';
 
-const Navbar: FunctionComponent<any> = ({ history }) => {
+const Navbar = ({ history }: RouteComponentProps) => {
   const [user, setUser] = useState(authmanager.user);
 
   useEffect(() => {
