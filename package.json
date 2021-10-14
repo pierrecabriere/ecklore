@@ -5,9 +5,13 @@
   "dependencies": {
     "@craco/craco": "^6.3.0",
     "cra-template-typescript": "1.1.2",
+    "graphand-js": "file:../graphand-js",
+    "graphand-react": "file:../graphand-react",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3"
+    "react-router-dom": "^5.3.0",
+    "react-scripts": "4.0.3",
+    "rxjs-auth": "^1.1.0"
   },
   "scripts": {
     "start": "craco start",
@@ -34,11 +38,13 @@
     "@types/jest": "^27.0.2",
     "@types/react": "^17.0.29",
     "@types/react-dom": "^17.0.9",
+    "@types/react-router-dom": "^5.3.1",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "autoprefixer": "^9.8.8",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^4.0.0",
