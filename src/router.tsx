@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import authmanager from './lib/authmanager';
 import graphandClient from './lib/graphand';
 import Navbar from './components/Navbar';
+import Register from './pages/Register';
 
 const Router = () => {
   useEffect(() => {
@@ -21,6 +22,7 @@ const Router = () => {
       <Navbar />
       <Switch>
         <Route component={notLoggedGuard(Login)} exact path="/login" />
+        <Route component={notLoggedGuard(Register)} exact path="/register" />
         <Route component={loggedGuard(Dashboard)} />
       </Switch>
     </BrowserRouter>

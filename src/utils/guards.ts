@@ -51,17 +51,11 @@ export const notLoggedGuard = (GuardedComponent: ComponentClass | FunctionCompon
       return React.createElement(GuardedComponent, props);
     }
 
-    if (authmanager.getToken() && authmanager.loading) {
-      const LoginPageComponent = require('../pages/Login').default;
-      return React.createElement(LoginPageComponent, { ...props, bypassGuard: true });
+    if (logged) {
+      history.push('/');
     }
 
-    if (!logged) {
-      return React.createElement(GuardedComponent, props);
-    }
-
-    history.push('/');
-    return null;
+    return React.createElement(GuardedComponent, props);
   };
 
   return withRouter(guard);

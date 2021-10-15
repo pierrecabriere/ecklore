@@ -1,7 +1,13 @@
-import Graphand, { GraphandFieldText } from 'graphand-js';
+import React from 'react';
+import Graphand, { GraphandFieldText, GraphandFieldNumber, GraphandFieldRelation } from 'graphand-js';
 import { GraphandPluginReact } from 'graphand-react';
 import Account from '../models/Account';
 import InputText from '../fields/inputs/Text';
+import Auction from '../models/Auction';
+import Bid from '../models/Bid';
+import InputNumber from '../fields/inputs/Number';
+import InputImage from '../fields/inputs/Image';
+import Buy from '../models/Buy';
 
 const accessToken = `\
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.\
@@ -14,10 +20,20 @@ const graphandClient = new Graphand({
   realtime: true,
   autoSync: true,
   accessToken,
-  models: [Account],
+  models: [Account, Auction, Bid, Buy],
   plugins: [GraphandPluginReact],
 });
 
 GraphandFieldText.InputComponent = InputText;
+GraphandFieldNumber.InputComponent = InputNumber;
+GraphandFieldRelation.InputComponent = (props: any) => {
+  const { field } = props;
+
+  if (field?.ref === 'Media' && !field.multiple) {
+    return React.createElement(InputImage, props);
+  }
+
+  return null;
+};
 
 export default graphandClient;

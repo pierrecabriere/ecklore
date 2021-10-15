@@ -1,20 +1,16 @@
 import React, { FunctionComponent } from 'react';
 
 const InputText: FunctionComponent<any> = ({ options, value, onChange, errors, id, field, ...props }) => {
-  const inputClass = () => {
-    let classes = `form-control block max-w-lg w-full shadow-sm sm:text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500`;
-    if (errors?.length) {
-      classes += ' invalid ring-indigo-500 border-red-500';
-    }
-    return classes;
-  };
+  const className = errors?.length
+    ? 'w-full px-3 py-2 border border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md'
+    : 'w-full px-3 py-2 border border-gray-300 sm:text-sm rounded-md';
 
   const renderInputContent = () => {
     switch (options.type) {
       case 'textarea':
         return (
           <textarea
-            className={inputClass()}
+            className={className}
             disabled={options.disabled}
             id={id}
             onChange={(e) => onChange(e.currentTarget.value)}
@@ -27,7 +23,7 @@ const InputText: FunctionComponent<any> = ({ options, value, onChange, errors, i
       default:
         return (
           <input
-            className={inputClass()}
+            className={className}
             disabled={options.disabled}
             id={id}
             onChange={(e) => onChange(e.currentTarget.value)}
@@ -43,18 +39,18 @@ const InputText: FunctionComponent<any> = ({ options, value, onChange, errors, i
   };
 
   return (
-    <div className="form-group sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-      <label htmlFor={id} className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+    <div className="py-2">
+      <label htmlFor={id} className="block text-sm font-medium text-gray-700">
         {options.label || field.name}
       </label>
-      {renderInputContent()}
+      <div className="mt-1 relative rounded-md shadow-sm">{renderInputContent()}</div>
       {options.helper || field.description ? (
-        <small className="field-text mt-2 text-sm text-gray-500 italic" id={`${id}:helper`}>
+        <p className="mt-2 text-sm text-gray-500" id={`${id}:helper`}>
           {options.helper || field.description}
-        </small>
+        </p>
       ) : null}
       {errors?.map((error: any) => (
-        <div className="invalid-feedback mt-2 text-sm text-red-600">{error.message}</div>
+        <p className="mt-2 text-sm text-red-600">{error.message}</p>
       ))}
     </div>
   );

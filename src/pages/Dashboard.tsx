@@ -1,8 +1,22 @@
 import React from 'react';
+import AuctionList from '../components/AuctionList';
 
 const Dashboard = () => (
-  <div className="py-8 sm:px-8 bg-gray-100 min-h-screen flex items-center">
-    <h1>Dashboard</h1>
+  <div className="px-4 py-6 max-w-screen-xl mx-auto">
+    <div className="border-b border-gray-200 pt-10 pb-10">
+      <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">Enchères en cours</h1>
+      <p className="mt-4 text-base text-gray-500">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum egestas tortor risus, in volutpat orci ornare sed.
+      </p>
+    </div>
+    <AuctionList query={{ endDate: { $gte: new Date() } }} />
+    <div className="border-b border-gray-200 pt-10 pb-10">
+      <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">Enchères terminées</h1>
+      <p className="mt-4 text-base text-gray-500">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum egestas tortor risus, in volutpat orci ornare sed.
+      </p>
+    </div>
+    <AuctionList query={{ endDate: { $lt: new Date() } }} hideAddTile />
   </div>
 );
 

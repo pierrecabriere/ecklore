@@ -32,6 +32,10 @@
         "import/extensions": "off",
         "import/no-unresolved": "off",
         "global-require": "off",
-        "react/jsx-props-no-spreading": "off"
+        "react/jsx-props-no-spreading": "off",
+        "no-underscore-dangle": "off",
+        "react/jsx-no-bind": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "no-nested-ternary": "off"
     }
 }

@@ -18,17 +18,33 @@ const Navbar = ({ history }: RouteComponentProps) => {
     history.push('/');
   };
 
-  return authmanager.user ? (
-    <div>
-      {user.fullname}{' '}
-      <button type="button" onClick={logout}>
-        Déconnexion
-      </button>
+  return (
+    <div className="w-full border-b border-gray-300 bg-white">
+      <div className="py-6 max-w-screen-xl mx-auto flex flex-row-reverse items-center justify-between">
+        {user ? (
+          <>
+            <div className="flex flex-row">
+              <strong>{user.fullname}</strong>
+              <button type="button" onClick={logout} className="block cursor-pointer px-4 font-medium hover:text-blue-500">
+                Déconnexion
+              </button>
+            </div>
+            <Link to="/" className="block cursor-pointer px-4 font-medium hover:text-blue-500">
+              <strong>Ecklore</strong>
+            </Link>
+          </>
+        ) : (
+          <div className="flex flex-row">
+            <Link to="/login" className="block cursor-pointer px-4 font-medium hover:text-blue-500">
+              Connexion
+            </Link>
+            <Link to="/register" className="block cursor-pointer px-4 font-medium hover:text-blue-500">
+              Inscription
+            </Link>
+          </div>
+        )}
+      </div>
     </div>
-  ) : (
-    <Link to="/login">
-      <button type="button">Connexion</button>
-    </Link>
   );
 };
 
