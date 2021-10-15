@@ -66,7 +66,7 @@ const BuyModal: FunctionComponent<any> = ({ isOpen, onClose, auction, bid }: { a
               {Bid.getList({ query: { auction, createdBy: { $ne: bid.createdBy } }, pageSize: 1, sort: '-price' }).suspense((bids: Bid[]) => {
                 // final price is the second winner highest price or the auction's reserve price in case
                 // no winner is designated
-                const finalPrice = bids[0] ? bids[0].price : auction.price;
+                const finalPrice = bids[0]?.price > auction.price ? bids[0].price : auction.price;
 
                 return (
                   <>

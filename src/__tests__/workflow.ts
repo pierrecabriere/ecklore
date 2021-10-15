@@ -121,6 +121,28 @@ test('Winning price should be the auction price', async () => {
   await _clean({ auction, bids });
 });
 
+// If the winning price from a buyer is under the reserve price, reserve price should be returned
+test('Winning price should be the auction price', async () => {
+  // eslint-disable-next-line no-unused-vars
+  const [userA, userB] = await _getUsers();
+  const auction = await _createAuction(100);
+
+  const bids = await Promise.all([
+    // User A
+    _createBidForAccount({ account: userA, auction, price: 50 }),
+    _createBidForAccount({ account: userA, auction, price: 60 }),
+
+    // User B
+    _createBidForAccount({ account: userB, auction, price: 45 }),
+    _createBidForAccount({ account: userB, auction, price: 55 }),
+  ]);
+
+  const winningPrice = await bids[1].getWinningPrice(userA);
+  expect(winningPrice).toEqual(100);
+
+  await _clean({ auction, bids });
+});
+
 // Only the winning buyer should be able to win the auction
 test('Wrong user should not be able to win the auction', async () => {
   // eslint-disable-next-line no-unused-vars

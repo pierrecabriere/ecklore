@@ -19,7 +19,7 @@ class Bid extends GraphandModelData {
 
     // @ts-ignore
     const winningBid = await Bid.get({ query: { auction, createdBy: { $ne: account } }, pageSize: 1, sort: '-price' });
-    const winningPrice = winningBid?.price || auction.price;
+    const winningPrice = winningBid?.price > auction.price ? winningBid.price : auction.price;
 
     return winningPrice;
   }
