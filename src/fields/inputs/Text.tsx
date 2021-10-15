@@ -49,7 +49,7 @@ const InputText: FunctionComponent<any> = ({ options, value, onChange, errors, i
           {options.helper || field.description}
         </p>
       ) : null}
-      {errors?.map((error: any) => (
+      {errors?.map((error: Error) => (
         <p className="mt-2 text-sm text-red-600">{error.message}</p>
       ))}
     </div>

@@ -41,7 +41,7 @@ const AuctionListItem = ({ item }: Attributes & { item: Auction }) => {
           )}
           <p className="text-sm text-gray-500 line-clamp-3">{item.description}</p>
 
-          {Bid.getList({ query: { auction: item }, pageSize: 1, sort: '-price' }).suspense((bids: any) => (
+          {Bid.getList({ query: { auction: item }, pageSize: 1, sort: '-price' }).suspense((bids: Bid[] & { count: number }) => (
             <div>
               <p className="text-sm italic text-gray-500">Prix de référence : {item.price} €</p>
               {bids.length ? (
@@ -52,7 +52,7 @@ const AuctionListItem = ({ item }: Attributes & { item: Auction }) => {
                       ({bids.count} enchère{bids.count > 1 ? 's' : ''})
                     </span>
                   </p>
-                  {bids[0].createdBy.suspense((account: Account) =>
+                  {bids[0].createdBy?.suspense((account: Account) =>
                     account ? (
                       <p className="text-sm italic text-gray-500">
                         Vainqueur {!isExpired ? 'temporaire' : null} : {account.fullname}
@@ -64,7 +64,7 @@ const AuctionListItem = ({ item }: Attributes & { item: Auction }) => {
                 <p className="text-base font-medium text-gray-900">Aucune enchère</p>
               )}
               <div className="space-x-2">
-                {isExpired && bids[0]?.createdBy === authmanager.user && !item.bought ? (
+                {isExpired && bids[0]?.createdBy?._id === authmanager.user?._id && !item.bought ? (
                   <>
                     <button type="button" className="text-sm font-medium text-blue-500 hover:text-blue-700" onClick={() => setIsBuyOpen(true)}>
                       Acheter

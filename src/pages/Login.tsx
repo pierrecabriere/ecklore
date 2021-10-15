@@ -5,7 +5,7 @@ import authmanager from '../lib/authmanager';
 import Account from '../models/Account';
 
 const Login = () => {
-  const handleLogin = async (values: any) => {
+  const handleLogin = async (values: object) => {
     await authmanager.login(values);
   };
 

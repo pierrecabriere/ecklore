@@ -1,24 +1,33 @@
 import React, { Fragment, FunctionComponent } from 'react';
 import { GraphandForm } from 'graphand-react';
-import { GraphandFieldNumber } from 'graphand-js';
+import { GraphandFieldNumber, GraphandValidationError } from 'graphand-js';
 import { Dialog, Transition } from '@headlessui/react';
 import { addSeconds } from 'date-fns';
 import Auction from '../../models/Auction';
 import graphandClient from '../../lib/graphand';
 
 const AddAuctionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: Function }) => {
-  const handleCreateAuction = async (values: any) => {
-    const Media = graphandClient.getModel('Media');
-    let image;
-
-    if (values.image instanceof File) {
-      image = await Media.create({ file: values.image });
+  const handleCreateAuction = async (values: { image: File; pendingSeconds: number }) => {
+    if (!values.pendingSeconds) {
+      throw new GraphandValidationError('Ce champ est requis', 'pendingSeconds');
     }
 
-    const endDate = addSeconds(new Date(), values.pendingSeconds);
+    try {
+      const Media = graphandClient.getModel('Media');
+      let image;
 
-    const auction = await Auction.create({ ...values, image, endDate });
-    onClose(auction);
+      if (values.image instanceof File) {
+        image = await Media.create({ file: values.image });
+      }
+
+      const endDate = addSeconds(new Date(), values.pendingSeconds);
+
+      const auction = await Auction.create({ ...values, image, endDate });
+      onClose(auction);
+    } catch (e) {
+      console.error(e);
+      alert('Une erreur est survenue, merci de réessayer plus tard.');
+    }
   };
 
   const renderForm: FunctionComponent<any> = ({ fields, formRef, handleSubmit, isLoading }) => (
@@ -107,7 +116,7 @@ const AddAuctionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: Functi
               <GraphandForm
                 model={Auction}
                 onSubmit={handleCreateAuction}
-                fields={(fields: any) =>
+                fields={(fields: object) =>
                   Object.assign(fields, {
                     pendingSeconds: new GraphandFieldNumber({ name: 'Secondes restantes' }),
                   })

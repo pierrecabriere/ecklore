@@ -6,7 +6,7 @@ import Account from '../models/Account';
 import authmanager from '../lib/authmanager';
 
 const Register = () => {
-  const handleRegister = async (values: any) => {
+  const handleRegister = async (values: { firstname: string; lastname: string; email: string; password: string; confirmPassword: string }) => {
     const { firstname, lastname, email, password, confirmPassword } = values;
     if (password !== confirmPassword) {
       throw new GraphandValidationError('Les mots de passe ne correspondent pas', 'confirmPassword');
@@ -62,7 +62,7 @@ const Register = () => {
       <div className="max-w-screen-md w-full mx-auto space-y-4 sm:space-y-8">
         <GraphandForm
           model={Account}
-          fields={(fields: any) =>
+          fields={(fields: object) =>
             Object.assign(fields, {
               confirmPassword: new GraphandFieldText({
                 name: 'Confirmation du mot de passe',

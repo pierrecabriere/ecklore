@@ -6,7 +6,7 @@ import authmanager from '../../lib/authmanager';
 import Buy from '../../models/Buy';
 
 const BuyModal: FunctionComponent<any> = ({ isOpen, onClose, auction, bid }: { auction: Auction; bid: Bid; isOpen: boolean; onClose: Function }) => {
-  if (bid.createdBy._id !== authmanager.user._id || auction.endDate > new Date()) {
+  if (bid.createdBy?._id !== authmanager.user._id || auction.endDate > new Date()) {
     throw new Error("Vous essayer d'acheter un objet dont vous n'avez pas remporté l'enchère");
   }
 
@@ -63,7 +63,7 @@ const BuyModal: FunctionComponent<any> = ({ isOpen, onClose, auction, bid }: { a
                 Acheter &quot;{auction.title}&quot;
               </Dialog.Title>
 
-              {Bid.getList({ query: { auction, createdBy: { $ne: bid.createdBy } }, pageSize: 1, sort: '-price' }).suspense((bids: any) => {
+              {Bid.getList({ query: { auction, createdBy: { $ne: bid.createdBy } }, pageSize: 1, sort: '-price' }).suspense((bids: Bid[]) => {
                 // final price is the second winner highest price or the auction's reserve price in case
                 // no winner is designated
                 const finalPrice = bids[0] ? bids[0].price : auction.price;

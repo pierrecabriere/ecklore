@@ -1,4 +1,8 @@
 import Graphand from 'graphand-js';
+import Account from './models/Account';
+import Auction from './models/Auction';
+import Bid from './models/Bid';
+import Buy from './models/Buy';
 
 const accessToken = `\
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.\
@@ -8,12 +12,11 @@ d0SR_aUIQrJGreeYVw6EeHhFPCekY8zJLX6j-Cbv7Ds\
 
 const graphandClient = new Graphand({
   project: '616719d19ab8fd240dbb95df',
+  models: [Account, Auction, Bid, Buy],
   accessToken,
 });
 
-const [Bid, Auction] = graphandClient.getModels(['Data:bid', 'Data:auction']);
-
-const _getReqAccount = async (headers: any) => {
+const _getReqAccount = async (headers: { authorization: string }) => {
   const reqToken = headers.authorization.replace(/^Bearer /, '');
   const userClient = graphandClient.clone({
     accessToken: reqToken,
@@ -22,9 +25,11 @@ const _getReqAccount = async (headers: any) => {
   return userClient.getModel('Account').getCurrent();
 };
 
+// @ts-ignore
 graphandClient.getModel('Data:buy').on(
   'before_create',
   async ({ req, headers }: { req: any; headers: any }) => {
+    // @ts-ignore
     const buyingBid = await Bid.get(req.bid);
     if (!buyingBid) {
       return;
@@ -37,6 +42,7 @@ graphandClient.getModel('Data:buy').on(
       return;
     }
 
+    // @ts-ignore
     await Auction.update({ ids: [buyingBid.auction._id], set: { bought: true } });
 
     console.log(

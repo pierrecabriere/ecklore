@@ -5,27 +5,19 @@ import authmanager from '../lib/authmanager';
 export const loggedGuard = (GuardedComponent: ComponentClass | FunctionComponent) => {
   const guard = ({ bypassGuard, ...props }: { bypassGuard: boolean } & Attributes) => {
     let loggedSub: any;
-    // let loadingSub: any;
-    // const [loading, setLoading]: any = useState(authmanager.loading);
     const [logged, setLogged]: any = useState(authmanager.logged);
 
     useEffect(() => {
       loggedSub = authmanager.loggedSubject.subscribe(setLogged);
-      // loadingSub = authmanager.loadingSubject.subscribe(setLoading);
 
       return () => {
         loggedSub.unsubscribe();
-        // loadingSub.unsubscribe();
       };
     }, []);
 
     if (bypassGuard || logged) {
       return React.createElement(GuardedComponent, props);
     }
-
-    // if (loading) {
-    //   return null;
-    // }
 
     const LoginPageComponent = require('../pages/Login').default;
     return React.createElement(LoginPageComponent, props);

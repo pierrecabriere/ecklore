@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "baseUrl": "./",
     "lib": [
       "dom",
@@ -21,9 +21,11 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "declaration": true,
+    "downlevelIteration": true,
+    "importHelpers": true,
     "typeRoots": [
-      "node_modules/@types",
-      "./src/@types"
+      "./src/@types",
+      "./node_modules/@types"
     ]
   },
   "include": [

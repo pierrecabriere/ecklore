@@ -26,7 +26,7 @@ const graphandClient = new Graphand({
 
 GraphandFieldText.InputComponent = InputText;
 GraphandFieldNumber.InputComponent = InputNumber;
-GraphandFieldRelation.InputComponent = (props: any) => {
+GraphandFieldRelation.InputComponent = (props: { field: any }) => {
   const { field } = props;
 
   if (field?.ref === 'Media' && !field.multiple) {

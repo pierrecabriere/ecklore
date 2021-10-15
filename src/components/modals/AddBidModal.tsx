@@ -5,14 +5,14 @@ import Auction from '../../models/Auction';
 import Bid from '../../models/Bid';
 
 const AddBidModal = ({ isOpen, onClose, auction }: { auction: Auction; isOpen: boolean; onClose: Function }) => {
-  const handleCreateBid = async (values: any) => {
+  const handleCreateBid = async (values: { auction: Auction }) => {
     const bid = await Bid.create({ ...values, auction });
     onClose(bid);
   };
 
   const renderForm: FunctionComponent<any> = ({ fields, formRef, handleSubmit, isLoading }) => (
     <form ref={formRef} onSubmit={handleSubmit} className={isLoading ? 'opacity-50' : ''}>
-      {Bid.getList({ query: { auction }, pageSize: 1, sort: '-price' }).suspense((bids: any) =>
+      {Bid.getList({ query: { auction }, pageSize: 1, sort: '-price' }).suspense((bids: Bid[]) =>
         bids.length ? (
           <div className="mt-2">
             <p className="text-sm text-gray-500">
