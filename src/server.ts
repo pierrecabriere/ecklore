@@ -11,9 +11,9 @@ const graphandClient = new Graphand({
   accessToken,
 });
 
-const Bid = graphandClient.getModel('Data:bid');
+const [Bid, Auction] = graphandClient.getModels(['Data:bid', 'Data:auction']);
 
-const getReqAccount = async (headers: any) => {
+const _getReqAccount = async (headers: any) => {
   const reqToken = headers.authorization.replace(/^Bearer /, '');
   const userClient = graphandClient.clone({
     accessToken: reqToken,
@@ -30,26 +30,18 @@ graphandClient.getModel('Data:buy').on(
       return;
     }
 
-    const auction = await buyingBid.auction;
-    if (!auction) {
+    const reqAccount = await _getReqAccount(headers);
+    const winningPrice = await buyingBid.getWinningPrice(reqAccount);
+
+    if (!winningPrice || winningPrice !== req.price) {
       return;
     }
 
-    const reqAccount = await getReqAccount(headers);
-    if (reqAccount?._id !== buyingBid.createdBy?._id) {
-      return;
-    }
+    await Auction.update({ ids: [buyingBid.auction._id], set: { bought: true } });
 
-    const winningBid = await Bid.get({ query: { auction, createdBy: { $ne: reqAccount } }, pageSize: 1, sort: '-price' });
-    const winningPrice = winningBid?.price || auction.price;
-
-    if (winningPrice !== req.price) {
-      return;
-    }
-
-    await auction.update({ set: { bought: true } });
-
-    console.log(`Achat validé avec succès pour le compte ${reqAccount.fullname} sur l'enchère ${auction.title} au prix de ${winningPrice} € !`);
+    console.log(
+      `Achat validé avec succès pour le compte ${reqAccount.fullname} sur l'enchère ${buyingBid.auction._id} au prix de ${winningPrice} € !`,
+    );
     req.validated = true;
   },
   { await: true },
