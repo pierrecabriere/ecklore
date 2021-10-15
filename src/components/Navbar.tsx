@@ -30,7 +30,7 @@ const Navbar = ({ history }: RouteComponentProps) => {
               </button>
             </div>
             <Link to="/" className="block cursor-pointer px-4 font-medium hover:text-blue-500">
-              <strong>Ecklore</strong>
+              ecklore.test
             </Link>
           </>
         ) : (

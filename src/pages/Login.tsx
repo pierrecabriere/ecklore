@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react';
-import { GraphandFieldText } from 'graphand-js';
 import { GraphandForm } from 'graphand-react';
 import { Link } from 'react-router-dom';
 import authmanager from '../lib/authmanager';
+import Account from '../models/Account';
 
 const Login = () => {
   const handleLogin = async (values: any) => {
@@ -13,6 +13,7 @@ const Login = () => {
     <form ref={formRef} onSubmit={handleSubmit} className={isLoading ? 'opacity-50' : ''}>
       <div className="card bg-white rounded-lg shadow divide-y divide-gray-200" onSubmit={handleSubmit}>
         <div className="border-b border-gray-200 px-6 py-10">
+          <img src="giraffe-ink.png" alt="Giraffe Ink." className="w-56 mb-4 mx-auto" />
           <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">Bienvenue sur ecklore.test</h1>
           <p className="mt-4 text-base text-gray-500">
             Bienvenue sur ecklore.test. Si vous avez déjà un compte, vous pouvez vous connecter à la plateforme d&apos;enchères grâce au formulaire
@@ -27,8 +28,8 @@ const Login = () => {
         </div>
         <div className="w-full flex flex-col p-6">
           <div className="card-body py-4 w-full">
-            {fields.render('email')}
-            {fields.render('password', { inputType: 'password' })}
+            {fields.render('email', { type: 'email' })}
+            {fields.render('password', { type: 'password' })}
           </div>
           <div className="card-footer text-muted w-full flex justify-end">
             <button
@@ -46,26 +47,8 @@ const Login = () => {
 
   return (
     <div className="py-8 sm:px-8 bg-gray-100 min-h-screen flex items-center">
-      <div className="max-w-screen-xl w-full mx-auto space-y-4 sm:space-y-8">
-        <GraphandForm
-          fields={{
-            email: new GraphandFieldText({
-              name: 'Adresse email',
-            }),
-            password: new GraphandFieldText({
-              name: 'Mot de passe',
-            }),
-          }}
-          fieldsOptions={{
-            email: {
-              type: 'email',
-            },
-            password: {
-              type: 'password',
-            },
-          }}
-          onSubmit={handleLogin}
-        >
+      <div className="max-w-screen-md w-full mx-auto space-y-4 sm:space-y-8">
+        <GraphandForm model={Account} onSubmit={handleLogin}>
           {renderForm}
         </GraphandForm>
       </div>
