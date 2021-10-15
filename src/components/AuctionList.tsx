@@ -28,7 +28,7 @@ const AuctionList: FunctionComponent<any> = ({ hideAddTile, query }) => {
             </div>
           ) : null}
 
-          {Auction.getList({ query, sort: '-createdAt' }).suspense(
+          {Auction.getList({ query, sort: 'endDate' }).suspense(
             (auctions: Auction[]) => auctions.map((auction: Auction) => <AuctionListItem key={auction._id} item={auction} />),
             {
               fallback: <div>Chargement des enchères ...</div>,
